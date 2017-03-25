@@ -10,6 +10,7 @@ use App\Questionair;
 use Auth;
 use App\Question;
 use App\QuestionOption;
+use DB;
 
 class QuestionairController extends Controller {
 
@@ -38,6 +39,7 @@ class QuestionairController extends Controller {
     public function addQuestion($id) {
         if ($this->_request->isMethod('post')) {
             $dataToSave = $this->_request->input('questiontToSave');
+            DB::beginTransaction();
             foreach ($dataToSave as $data) {
                 $result = $this->_questionair->getQuestionbyId($data);
                 //$result = $questionObj->where('id', $data)->get();
@@ -96,6 +98,7 @@ class QuestionairController extends Controller {
                     }
                 }
             }
+            DB::commit();
             return redirect()->back();
         }
 
